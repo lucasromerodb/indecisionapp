@@ -1,84 +1,88 @@
 'use strict';
 
 var app = {
-  title: 'My título',
-  subtitle: 'Esto es un subtitulo',
-  options: ['One', 'Two']
-
-  // JSX - JavaScript XML
-};var template = React.createElement(
-  'div',
-  { id: 'myp' },
-  React.createElement('hr', null),
-  React.createElement(
-    'strong',
-    null,
-    'babel src/app.js --out-file=scripts/app.js --presets=env,react --watch'
-  ),
-  React.createElement(
-    'h2',
-    null,
-    app.title
-  ),
-  app.subtitle && React.createElement(
-    'p',
-    null,
-    app.subtitle
-  ),
-  React.createElement(
-    'p',
-    null,
-    app.options.length > 0 ? 'Here are your options ' : 'No options'
-  ),
-  React.createElement(
-    'ol',
-    null,
-    React.createElement(
-      'li',
-      null,
-      'first item'
-    ),
-    React.createElement(
-      'li',
-      null,
-      'second item'
-    )
-  )
-);
-
-var user = {
-  name: '',
-  age: 26,
-  location: 'Argentina'
+  title: 'Indecision App',
+  subtitle: 'Pon tu vida en las manos de la tecnología',
+  options: []
 };
 
-function getLocation(location) {
-  if (location) {
-    return React.createElement(
+var onFormSubmit = function onFormSubmit(e) {
+  e.preventDefault();
+  var optionValue = e.target.elements.option.value;
+  if (optionValue) {
+    app.options.push(optionValue);
+    e.target.elements.option.value = '';
+    renderApp();
+  }
+};
+
+var removeItems = function removeItems() {
+  app.options = [];
+  renderApp();
+};
+
+var appRoot = document.getElementById('app');
+
+var renderApp = function renderApp() {
+
+  var template = React.createElement(
+    'div',
+    { id: 'myp' },
+    React.createElement(
+      'h2',
+      null,
+      app.title
+    ),
+    app.subtitle && React.createElement(
       'p',
       null,
-      'Location: ',
-      location
-    );
-  }
-}
+      app.subtitle
+    ),
+    React.createElement(
+      'p',
+      null,
+      app.options.length > 0 ? 'Here are your options ' : 'No options'
+    ),
+    React.createElement(
+      'p',
+      null,
+      app.options.length
+    ),
+    React.createElement(
+      'button',
+      { onClick: removeItems },
+      'Remove all'
+    ),
+    React.createElement(
+      'ol',
+      null,
+      app.options.map(function (option) {
+        return React.createElement(
+          'li',
+          { key: option },
+          option
+        );
+      })
+    ),
+    React.createElement(
+      'form',
+      { onSubmit: onFormSubmit },
+      React.createElement('input', { type: 'text', name: 'option' }),
+      React.createElement(
+        'button',
+        null,
+        'Add option'
+      )
+    ),
+    React.createElement('hr', null),
+    React.createElement(
+      'small',
+      null,
+      'babel src/app.js --out-file=scripts/app.js --presets=env,react --watch'
+    )
+  );
 
-var templateTwo = React.createElement(
-  'div',
-  null,
-  React.createElement(
-    'h1',
-    null,
-    user.name ? user.name : 'Anónimo'
-  ),
-  user.age && user.age >= 18 && React.createElement(
-    'p',
-    null,
-    'Age: ',
-    user.age
-  ),
-  getLocation(user.location)
-);
+  ReactDOM.render(template, appRoot);
+};
 
-ReactDOM.render(templateTwo, document.getElementById('app'));
-ReactDOM.render(template, document.getElementById('app2'));
+renderApp();

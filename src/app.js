@@ -1,43 +1,50 @@
 const app ={
-  title : 'My título',
-  subtitle : 'Esto es un subtitulo',
-  options : ['One', 'Two']
+  title : 'Indecision App',
+  subtitle : 'Pon tu vida en las manos de la tecnología',
+  options : []
 }
 
-// JSX - JavaScript XML
-const template = (
-  <div id="myp">
-    <hr></hr>
-    <strong>babel src/app.js --out-file=scripts/app.js --presets=env,react --watch</strong>
-    <h2>{app.title}</h2>
-    {app.subtitle && <p>{app.subtitle}</p> }
-    <p>{app.options.length > 0 ? 'Here are your options ' : 'No options'}</p>
-    <ol>
-      <li>first item</li>
-      <li>second item</li>
-    </ol>
-  </div>
-);
-
-const user = {
-  name: '',
-  age: 26,
-  location: 'Argentina',
-}
-
-function getLocation(location) {
-  if (location) {
-    return <p>Location: {location}</p>;
+const onFormSubmit = (e) => {
+  e.preventDefault();
+  const optionValue = e.target.elements.option.value;
+  if (optionValue) {
+    app.options.push(optionValue);
+    e.target.elements.option.value = '';
+    renderApp();
   }
 }
 
-const templateTwo = (
-  <div>
-    <h1>{user.name ? user.name : 'Anónimo'}</h1>
-    {(user.age && user.age >= 18) && <p>Age: {user.age}</p>}
-    {getLocation(user.location)}
-  </div>
-);
+const removeItems = () => {
+  app.options = [];
+  renderApp();
+}
 
-ReactDOM.render(templateTwo, document.getElementById('app'));
-ReactDOM.render(template, document.getElementById('app2'));
+const appRoot =  document.getElementById('app');
+
+const renderApp = () => {
+
+  const template = (
+    <div id="myp">
+      <h2>{app.title}</h2>
+      {app.subtitle && <p>{app.subtitle}</p> }
+      <p>{app.options.length > 0 ? 'Here are your options ' : 'No options'}</p>
+      <p>{app.options.length}</p>
+      <button onClick={removeItems}>Remove all</button>
+      <ol>
+        {
+          app.options.map((option) =>  <li key={option}>{option}</li> )
+        }
+      </ol>
+      <form onSubmit={onFormSubmit}>
+        <input type="text" name="option"/>
+        <button>Add option</button>
+      </form>
+      <hr/>
+      <small>babel src/app.js --out-file=scripts/app.js --presets=env,react --watch</small>
+    </div>
+  )
+
+  ReactDOM.render(template, appRoot);
+}
+
+renderApp();
