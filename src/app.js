@@ -19,6 +19,12 @@ const removeItems = () => {
   renderApp();
 }
 
+const onMakeDecision = () => {
+  const randomNum = Math.floor(Math.random() * app.options.length);
+  const option = app.options[randomNum];
+  console.log(option);
+}
+
 const appRoot =  document.getElementById('app');
 
 const renderApp = () => {
@@ -28,17 +34,20 @@ const renderApp = () => {
       <h2>{app.title}</h2>
       {app.subtitle && <p>{app.subtitle}</p> }
       <p>{app.options.length > 0 ? 'Here are your options ' : 'No options'}</p>
-      <p>{app.options.length}</p>
-      <button onClick={removeItems}>Remove all</button>
       <ol>
         {
           app.options.map((option) =>  <li key={option}>{option}</li> )
         }
       </ol>
+      <button disabled={app.options.length === 0} onClick={onMakeDecision}>What should i do?</button>
+      <br/>
+      <br/>
       <form onSubmit={onFormSubmit}>
         <input type="text" name="option"/>
         <button>Add option</button>
       </form>
+      <br/>
+      <button onClick={removeItems}>Remove all</button>
       <hr/>
       <small>babel src/app.js --out-file=scripts/app.js --presets=env,react --watch</small>
     </div>
