@@ -29,7 +29,7 @@ var IndecisionApp = function (_React$Component) {
         null,
         React.createElement(Header, { title: title, subtitle: subtitle }),
         React.createElement(Action, null),
-        React.createElement(Options, null),
+        React.createElement(Options, { options: options }),
         React.createElement(AddOption, null)
       );
     }
@@ -50,9 +50,6 @@ var Header = function (_React$Component2) {
   _createClass(Header, [{
     key: 'render',
     value: function render() {
-
-      console.log(this.props);
-
       return React.createElement(
         'div',
         null,
@@ -83,6 +80,11 @@ var Action = function (_React$Component3) {
   }
 
   _createClass(Action, [{
+    key: 'handlePick',
+    value: function handlePick() {
+      alert('handlePick');
+    }
+  }, {
     key: 'render',
     value: function render() {
       return React.createElement(
@@ -90,7 +92,7 @@ var Action = function (_React$Component3) {
         null,
         React.createElement(
           'button',
-          null,
+          { onClick: this.handlePick },
           'What should I do?'
         )
       );
@@ -110,16 +112,24 @@ var Options = function (_React$Component4) {
   }
 
   _createClass(Options, [{
+    key: 'handleRemoveAll',
+    value: function handleRemoveAll() {
+      alert('handleRemoveAll');
+    }
+  }, {
     key: 'render',
     value: function render() {
       return React.createElement(
-        'ol',
+        'div',
         null,
         React.createElement(
-          'li',
-          null,
-          React.createElement(Option, null)
-        )
+          'button',
+          { onClick: this.handleRemoveAll },
+          'Remove All'
+        ),
+        this.props.options.map(function (option) {
+          return React.createElement(Option, { option: option, key: option });
+        })
       );
     }
   }]);
@@ -140,9 +150,9 @@ var Option = function (_React$Component5) {
     key: 'render',
     value: function render() {
       return React.createElement(
-        'div',
+        'p',
         null,
-        'Lanonda'
+        this.props.option
       );
     }
   }]);
@@ -160,11 +170,21 @@ var AddOption = function (_React$Component6) {
   }
 
   _createClass(AddOption, [{
+    key: 'handleAddOption',
+    value: function handleAddOption(e) {
+      e.preventDefault();
+      var inputValue = e.target.elements.option.value.trim();
+      if (inputValue) {
+        alert('The value is: ' + inputValue);
+      }
+    }
+  }, {
     key: 'render',
     value: function render() {
       return React.createElement(
-        'div',
-        null,
+        'form',
+        { onSubmit: this.handleAddOption },
+        React.createElement('input', { type: 'text', name: 'option' }),
         React.createElement(
           'button',
           null,
