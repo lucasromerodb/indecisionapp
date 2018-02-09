@@ -29,9 +29,9 @@ class IndecisionApp extends React.Component {
 
   handleAddOption(option) {
     if (!option) {
-      return 'Enter valid value';
+      return 'Escribí un juego capo...';
     } else if (this.state.options.indexOf(option) > -1) {
-      return 'This option already exists';
+      return 'El juego ya existe';
     }
 
     this.setState((prevState) => {
@@ -42,24 +42,26 @@ class IndecisionApp extends React.Component {
   }
 
   render() {
-    const title = 'Indecision';
-    const subtitle = 'Put your life in the hands of a computer';
+    const title = '¿Qué voy a jugar hoy?';
+    const subtitle = 'Dejá que esta app se la juegue por vos (?) ...ta dum tss :peola:';
 
     return(
       <div>
         <Header title={title} subtitle={subtitle} />
-        <Action
-          hasOptions={this.state.options.length > 0}
-          handlePick={this.handlePick}
-        />
-        <p>{this.state.picked}</p>
         <Options
           options={this.state.options}
           handleDeleteOptions={this.handleDeleteOptions}
         />
         <AddOption
           handleAddOption={this.handleAddOption}
-         />
+        />
+        <br />
+        <Action
+          hasOptions={this.state.options.length > 1}
+          handlePick={this.handlePick}
+        />
+      <h3>{this.state.picked}</h3>
+
       </div>
     )
   }
@@ -83,7 +85,7 @@ class Action extends React.Component {
           onClick={this.props.handlePick}
           disabled={!this.props.hasOptions}
         >
-          What should I do?
+          Decidir que voy a jugar
         </button>
       </div>
     )
@@ -94,7 +96,9 @@ class Options extends React.Component {
   render() {
     return(
       <div>
-        <button onClick={this.props.handleDeleteOptions}>Remove All</button>
+        <button onClick={this.props.handleDeleteOptions}>Comenzar de nuevo</button>
+        <br />
+        <br />
         {
           this.props.options.map((option) => <Option option={option} key={option} /> )
         }
@@ -137,9 +141,10 @@ class AddOption extends React.Component {
   render() {
     return(
       <form onSubmit={this.handleAddOption}>
-        <input type="text" name="option"/>
-        <button>Add option</button>
-        {this.state.error && <p>{this.state.error}</p>}
+        <input type="text" name="option" placeholder="Nombre de un juego" />
+        <button>Añadir juego</button>
+        <br />
+        {this.state.error && <small>{this.state.error}</small>}
       </form>
 
     )

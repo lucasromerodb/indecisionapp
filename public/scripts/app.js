@@ -50,9 +50,9 @@ var IndecisionApp = function (_React$Component) {
     key: 'handleAddOption',
     value: function handleAddOption(option) {
       if (!option) {
-        return 'Enter valid value';
+        return 'Escribí un juego capo...';
       } else if (this.state.options.indexOf(option) > -1) {
-        return 'This option already exists';
+        return 'El juego ya existe';
       }
 
       this.setState(function (prevState) {
@@ -64,29 +64,30 @@ var IndecisionApp = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      var title = 'Indecision';
-      var subtitle = 'Put your life in the hands of a computer';
+      var title = '¿Qué voy a jugar hoy?';
+      var subtitle = 'Dejá que esta app se la juegue por vos (?) ...ta dum tss :peola:';
 
       return React.createElement(
         'div',
         null,
         React.createElement(Header, { title: title, subtitle: subtitle }),
-        React.createElement(Action, {
-          hasOptions: this.state.options.length > 0,
-          handlePick: this.handlePick
-        }),
-        React.createElement(
-          'p',
-          null,
-          this.state.picked
-        ),
         React.createElement(Options, {
           options: this.state.options,
           handleDeleteOptions: this.handleDeleteOptions
         }),
         React.createElement(AddOption, {
           handleAddOption: this.handleAddOption
-        })
+        }),
+        React.createElement('br', null),
+        React.createElement(Action, {
+          hasOptions: this.state.options.length > 1,
+          handlePick: this.handlePick
+        }),
+        React.createElement(
+          'h3',
+          null,
+          this.state.picked
+        )
       );
     }
   }]);
@@ -147,7 +148,7 @@ var Action = function (_React$Component3) {
             onClick: this.props.handlePick,
             disabled: !this.props.hasOptions
           },
-          'What should I do?'
+          'Decidir que voy a jugar'
         )
       );
     }
@@ -174,8 +175,10 @@ var Options = function (_React$Component4) {
         React.createElement(
           'button',
           { onClick: this.props.handleDeleteOptions },
-          'Remove All'
+          'Comenzar de nuevo'
         ),
+        React.createElement('br', null),
+        React.createElement('br', null),
         this.props.options.map(function (option) {
           return React.createElement(Option, { option: option, key: option });
         })
@@ -245,14 +248,15 @@ var AddOption = function (_React$Component6) {
       return React.createElement(
         'form',
         { onSubmit: this.handleAddOption },
-        React.createElement('input', { type: 'text', name: 'option' }),
+        React.createElement('input', { type: 'text', name: 'option', placeholder: 'Nombre de un juego' }),
         React.createElement(
           'button',
           null,
-          'Add option'
+          'A\xF1adir juego'
         ),
+        React.createElement('br', null),
         this.state.error && React.createElement(
-          'p',
+          'small',
           null,
           this.state.error
         )
