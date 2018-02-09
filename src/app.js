@@ -66,53 +66,62 @@ class IndecisionApp extends React.Component {
     )
   }
 }
-class Header extends React.Component {
-  render() {
-    return(
-      <div>
-        <h1>{this.props.title}</h1>
-        <h2>{this.props.subtitle}</h2>
-      </div>
-    )
-  }
+// class Header extends React.Component {
+//   render() {
+//     return(
+//       <div>
+//         <h1>{this.props.title}</h1>
+//         <h2>{this.props.subtitle}</h2>
+//       </div>
+//     )
+//   }
+// }
+
+
+// statless functional component
+const Header = (props) => {
+  return(
+    <div>
+      <h1>{props.title}</h1>
+      <h2>{props.subtitle}</h2>
+    </div>
+  )
 }
 
-class Action extends React.Component {
-  render() {
-    return(
-      <div>
-        <button
-          onClick={this.props.handlePick}
-          disabled={!this.props.hasOptions}
-        >
-          Decidir que voy a jugar
-        </button>
-      </div>
-    )
-  }
+// statless functional component
+const Action = (props) => {
+  return(
+    <div>
+      <button
+        onClick={props.handlePick}
+        disabled={!props.hasOptions}
+      >
+        Decidir que voy a jugar
+      </button>
+    </div>
+  )
 }
 
-class Options extends React.Component {
-  render() {
-    return(
-      <div>
-        <button onClick={this.props.handleDeleteOptions}>Comenzar de nuevo</button>
-        <br />
-        <br />
-        {
-          this.props.options.map((option) => <Option option={option} key={option} /> )
-        }
-      </div>
-    )
-  }
+
+// statless functional component
+const Options = (props) => {
+  return(
+    <div>
+      <button onClick={props.handleDeleteOptions}>Comenzar de nuevo</button>
+      <br />
+      <br />
+      {
+        props.options.map((option) => <Option option={option} key={option} /> )
+      }
+    </div>
+  )
 }
 
-class Option extends React.Component {
-  render() {
-    return(
-      <p>{this.props.option}</p>
-    )
-  }
+// statless functional component
+const Option = (props) => {
+  return(
+    <p>{props.option}</p>
+  )
 }
 
 class AddOption extends React.Component {
