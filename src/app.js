@@ -6,7 +6,7 @@ class IndecisionApp extends React.Component {
     this.handlePick = this.handlePick.bind(this);
     this.handleAddOption = this.handleAddOption.bind(this);
     this.state = {
-      options: [],
+      options: props.options,
       picked: undefined
     }
   }
@@ -42,12 +42,11 @@ class IndecisionApp extends React.Component {
   }
 
   render() {
-    const title = '¿Qué voy a jugar hoy?';
     const subtitle = 'Dejá que esta app se la juegue por vos (?) ...ta dum tss :peola:';
 
     return(
       <div>
-        <Header title={title} subtitle={subtitle} />
+        <Header  subtitle={subtitle} />
         <Options
           options={this.state.options}
           handleDeleteOptions={this.handleDeleteOptions}
@@ -66,6 +65,12 @@ class IndecisionApp extends React.Component {
     )
   }
 }
+
+IndecisionApp.defaultProps = {
+  options: []
+}
+
+
 // class Header extends React.Component {
 //   render() {
 //     return(
@@ -77,15 +82,18 @@ class IndecisionApp extends React.Component {
 //   }
 // }
 
-
 // statless functional component
 const Header = (props) => {
   return(
     <div>
       <h1>{props.title}</h1>
-      <h2>{props.subtitle}</h2>
+      {props.subtitle && <h2>{props.subtitle}</h2>}
     </div>
   )
+}
+
+Header.defaultProps = {
+  title: 'IndecisionApp Udemy'
 }
 
 // statless functional component
