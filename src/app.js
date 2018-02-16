@@ -3,6 +3,7 @@ class IndecisionApp extends React.Component {
   constructor(props) {
     super(props);
     this.handleDeleteOptions = this.handleDeleteOptions.bind(this);
+    this.handleDeleteOption = this.handleDeleteOption.bind(this);
     this.handlePick = this.handlePick.bind(this);
     this.handleAddOption = this.handleAddOption.bind(this);
     this.state = {
@@ -12,19 +13,19 @@ class IndecisionApp extends React.Component {
   }
 
   handleDeleteOptions() {
-    this.setState(() => {
-      return {
-        options: []
-      }
-    })
+    this.setState(() => ({ options: [] }));
+  }
+
+  handleDeleteOption(optionToRemove) {
+    this.setState((prevState) => ({
+      options: prevState.options.filter((option) => {
+        return optionToRemove !== option;
+      })
+    }))
   }
 
   handlePick() {
-    this.setState(() => {
-      return {
-        picked: this.state.options[Math.floor(Math.random() * this.state.options.length)]
-      }
-    })
+    this.setState(() => ({ picked: this.state.options[Math.floor(Math.random() * this.state.options.length)] }))
   }
 
   handleAddOption(option) {
@@ -46,10 +47,11 @@ class IndecisionApp extends React.Component {
 
     return(
       <div>
-        <Header  subtitle={subtitle} />
+        <Header title="¿Qué vas a jugar hoy?" subtitle={subtitle} />
         <Options
           options={this.state.options}
           handleDeleteOptions={this.handleDeleteOptions}
+          handleDeleteOption={this.handleDeleteOption}
         />
         <AddOption
           handleAddOption={this.handleAddOption}
@@ -59,8 +61,7 @@ class IndecisionApp extends React.Component {
           hasOptions={this.state.options.length > 1}
           handlePick={this.handlePick}
         />
-      <h3>{this.state.picked}</h3>
-
+        <h3>{this.state.picked}</h3>
       </div>
     )
   }
@@ -119,7 +120,13 @@ const Options = (props) => {
       <br />
       <br />
       {
-        props.options.map((option) => <Option option={option} key={option} /> )
+        props.options.map((option) => (
+          <Option
+            option={option}
+            key={option}
+            handleDeleteOption={props.handleDeleteOption}
+          />
+        ) )
       }
     </div>
   )
@@ -128,7 +135,16 @@ const Options = (props) => {
 // statless functional component
 const Option = (props) => {
   return(
-    <p>{props.option}</p>
+    <p>
+      {props.option}
+      <button
+        onClick={(e) => {
+          props.handleDeleteOption(props.option)
+        }}
+      >
+        Quitar
+      </button>
+    </p>
   )
 }
 
