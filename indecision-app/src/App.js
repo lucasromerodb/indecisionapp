@@ -14,6 +14,33 @@ class IndecisionApp extends React.Component {
     }
   }
 
+  componentDidMount() {
+    try {
+      const json = localStorage.getItem('options');
+      const options = JSON.parse(json);
+
+      if (options) {
+        this.setState(() => ({options: options}))
+        console.log('Fetching Data...');
+      }
+    } catch (e) {
+      // No hacer nada
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.options.length !== this.state.options.length) {
+      const json = JSON.stringify(this.state.options);
+      localStorage.setItem('options', json);
+      console.log('Saving Data...');
+    }
+  }
+
+  componentWillUnmount() {
+    console.log('componentWillUnmount!');
+  }
+
+
   handleDeleteOptions() {
     this.setState(() => ({ options: [] }));
   }
@@ -107,8 +134,7 @@ const Options = (props) => {
   return(
     <div>
       <button onClick={props.handleDeleteOptions}>Comenzar de nuevo</button>
-      <br />
-      <br />
+      {props.options.length === 0 && <p>Agregue un juego para comenzar!</p>}
       {
         props.options.map((option) => (
           <Option
@@ -127,7 +153,7 @@ const Option = (props) => {
   return(
     <p>
       {props.option}
-      <button
+      <button style={{marginLeft: 10}}
         onClick={(e) => {
           props.handleDeleteOption(props.option)
         }}
@@ -158,7 +184,10 @@ class AddOption extends React.Component {
       }
     })
 
-    e.target.elements.option.value = null;
+    if (!error) {
+      e.target.elements.option.value = '';
+    }
+
   }
 
   render() {
